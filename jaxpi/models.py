@@ -130,7 +130,7 @@ def _create_train_state(config, params=None, weights=None):
     lr, tx = _create_optimizer(config.optim)
 
     if params is None:
-        if config.arch_name == "DeepONet":
+        if config.arch.arch_name == "DeepONet":
             u = jnp.ones(config.trunk_input_dim)
             x = jnp.ones(config.branch_input_dim)
             params = arch.init(random.PRNGKey(config.seed), u, x)
