@@ -125,13 +125,18 @@ def _create_optimizer(config):
 def _create_train_state(config, params=None, weights=None):
     # Initialize network
     arch = _create_arch(config.arch)
-    x = jnp.ones(config.input_dim)
 
     # Initialize optax optimizer
     lr, tx = _create_optimizer(config.optim)
 
     if params is None:
-        params = arch.init(random.PRNGKey(config.seed), x)
+        if config.arch_name == "DeepONet":
+            u = jnp.ones(config.trunk_input_dim)
+            x = jnp.ones(config.branch_input_dim)
+            params = arch.init(random.PRNGKey(config.seed), u, x)
+        else:
+            x = jnp.ones(config.input_dim)
+            params = arch.init(random.PRNGKey(config.seed), x)
 
     if weights is None:
         weights = dict(config.weighting.init_weights)
