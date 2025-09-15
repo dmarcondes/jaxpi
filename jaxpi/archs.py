@@ -476,14 +476,13 @@ class DeepONet(nn.Module):
             reparam=self.reparam,
         )(u)
 
-        x = Mlp(
+        x = MlpBlock(
             num_layers=self.num_trunk_layers,
             hidden_dim=self.hidden_dim,
             out_dim=self.hidden_dim,
             activation=self.activation,
-            periodicity=self.periodicity,
-            fourier_emb=self.fourier_emb,
-            reparam=self.reparam,
+            final_activation=False,
+            reparam=self.reparam
         )(x)
 
         y = u * x
